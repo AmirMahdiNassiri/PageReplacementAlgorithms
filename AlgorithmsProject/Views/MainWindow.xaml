@@ -1,12 +1,65 @@
-﻿<Window x:Class="AlgorithmsProject.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AlgorithmsProject.Views"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+﻿<Controls:MetroWindow x:Class="AlgorithmsProject.Views.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:local="clr-namespace:AlgorithmsProject.Views"
+                      xmlns:viewHelpers="clr-namespace:AlgorithmsProject.ViewHelpers"
+                      mc:Ignorable="d"
+                      DataContext="{Binding Source={StaticResource ViewModelLocator}, Path=MainWindowModel}"
+                      Title="Page Replacement Algorithms Benchmark" Height="450" Width="800">
+
+    <Controls:MetroWindow.Resources>
+        <viewHelpers:IntCollectionToDelimitedStringConverter x:Key="IntCollectionToDelimitedStringConverter"/>
+        <viewHelpers:FuncCollectionToDelimitedStringConverter x:Key="FuncCollectionToDelimitedStringConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Controls:MetroWindow.Resources>
+
     <Grid>
-        
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            
+            <TextBox Margin="10,10,10,0"
+                     Text="{Binding CacheSizes, Mode=TwoWay, Converter={StaticResource IntCollectionToDelimitedStringConverter}}"
+                     Controls:TextBoxHelper.Watermark="Cache sizes"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"/>
+            
+            <TextBox Margin="10,10,10,0"
+                     Text="{Binding SequenceSizeMultipliers, Converter={StaticResource IntCollectionToDelimitedStringConverter}}"
+                     Controls:TextBoxHelper.Watermark="Sequence size multipliers"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"/>
+            
+            <TextBox Margin="10,10,10,0"
+                     Text="{Binding DistinctPagesCountGenerators, Converter={StaticResource FuncCollectionToDelimitedStringConverter}}"
+                     Controls:TextBoxHelper.Watermark="Distinct pages count"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"/>
+            
+            <TextBox Margin="10,10,10,0"
+                     Text="{Binding EachSettingIterations}"
+                     Controls:TextBoxHelper.Watermark="Iteration per setting"
+                     Controls:TextBoxHelper.UseFloatingWatermark="True"/>
+
+            <Button Content="Run Benchmark" Margin="10,10,10,0"
+                    Command="{Binding RunBenchmarkCommand}"/>
+
+        </StackPanel>
+
+        <DataGrid Grid.Row="1" Margin="10,10,10,0"
+                  ItemsSource="{Binding Results, Mode=OneWay}"/>
+
+        <Border Background="#99FFFFFF" Grid.RowSpan="2"
+                Visibility="{Binding IsBusy, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+            
+            <Controls:ProgressRing Width="60" Height="60" Margin="20" 
+                                   IsActive="True" IsLarge="True"/>
+        </Border>
+
     </Grid>
-</Window>
+    
+</Controls:MetroWindow>

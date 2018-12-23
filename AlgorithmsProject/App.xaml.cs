@@ -19,13 +19,13 @@ namespace AlgorithmsProject
         {
             base.OnStartup(e);
 
-            FullBenchmark f = new FullBenchmark();
+            //FullBenchmark f = new FullBenchmark();
 
-            var fullBenchmarkResult = f.RunBenchmarkForAllAlgorithms();
+            //var fullBenchmarkResult = f.RunBenchmarkForAllAlgorithms();
             
-            var window = new TestWindow(fullBenchmarkResult);
+            //var window = new TestWindow(fullBenchmarkResult);
 
-            window.Show();
+            //window.Show();
         }
     }
 }
